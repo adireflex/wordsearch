@@ -1,9 +1,23 @@
 const gridSize = 10;
-const words = ['SUN', 'MOON', 'STAR', 'PLANET', 'GALAXY'];
+let words = [];
 let grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
 let firstSelection = null;
 let secondSelection = null;
 let foundWords = {};
+
+async function fetchWords() {
+    const response = await fetch('macedonian_words.json');
+    const data = await response.json();
+    return data.words;
+}
+
+async function initGame() {
+    words = await fetchWords();
+    placeWords(words);
+    fillEmptyCells();
+    renderGrid();
+    bindCellClickHandlers();
+}
 
 function createCellElement(r, c) {
     const cellElement = document.createElement('div');
@@ -46,7 +60,7 @@ function placeWords(words) {
 }
 
 function fillEmptyCells() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letters = 'АБВГДЕЖЗИЈКЛМНОПРСТУФХЦЧЏШ';
     for (let r = 0; r < gridSize; r++) {
         for (let c = 0; c < gridSize; c++) {
             if (grid[r][c] === '') {
@@ -209,11 +223,6 @@ function restartGame() {
 
 document.getElementById('restartButton').addEventListener('click', restartGame);
 
-placeWords(words);
-fillEmptyCells();
-renderGrid();
-bindCellClickHandlers();
-
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.cell').forEach(cell => {
         cell.addEventListener('mousemove', (e) => {
@@ -223,4 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.style.transformOrigin = `${x}px ${y}px`;
         });
     });
+
+    // Initialize the game
+    initGame();
 });
