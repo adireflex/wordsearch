@@ -1,9 +1,3 @@
-
-### JSON File (`macedonian_words.json`)
-
-Make sure this file is in the same directory as your HTML file.
-
-```json
 {
   "words": [
     "СОНЦЕ", "МЕСЕЧИНА", "ЅВЕЗДА", "ПЛАНЕТА", "ГАЛАКСИЈА", 
